@@ -102,7 +102,8 @@ export default function Checkout(props: any) {
                     if (res)
                         if (res.data)
                             if (res.data.message)
-                                alert(res.data.message);
+                                console.log (res);
+                                return res;
                 }
     
             }
@@ -111,7 +112,88 @@ export default function Checkout(props: any) {
             }
         }
 
-        sellProducts();
+
+        const createCustomer = async () => {
+            try{
+                const token =  localStorage.getItem('token');
+                if (token) {
+                    const res = await axios.post(Config.APIURL+ '/customers/register'  , {
+                        lastName,
+                        firstName,
+                        branchId:props.location.state.branchId,
+                        
+    
+    
+                    }, {
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        }
+                    });
+                    if (res)
+                        if (res.data)
+                            if (res.data.message)
+                                console.log(res);
+                                return res;
+                }
+            } catch(e){
+                errorHandler(e);
+            }
+        }
+
+        sellProducts()
+        .then((res:any)=>{
+            if(res)
+            createCustomer()
+            .then(async (res:any)=>{
+                if(res.data){
+                    console.log(res.data[0]['insertId']);
+                    const orderParam = {
+                        products:[],
+                        customerId:res.data[0]['insertId'],
+                        orderPrice:0,
+                    };
+                    props.location.state.products.map((product:any)=>{
+                        if(product.isAddPressed===true){
+                            orderParam.products.push(product.productId as never);
+                            orderParam.orderPrice += product.price;
+    
+                        }
+                        return;
+                    });
+                    try{
+                        const token =  localStorage.getItem('token');
+                        if (token) {
+                            const {customerId, products, orderPrice} = orderParam;
+                            const res = await axios.post(Config.APIURL+ '/orders/register'  , {
+                                customerId,
+                                products,
+                                orderPrice,
+                                
+                                
+            
+            
+                            }, {
+                                headers: {
+                                    'Authorization': 'Bearer ' + token
+                                }
+                            });
+                            if (res)
+                                if (res.data)
+                                    if (res.data.message)
+                                        console.log(res);
+                                        return res;
+                        }
+                    } catch(e){
+                        errorHandler(e);
+                    }
+                }
+               
+
+
+
+            })
+           
+        });
         props.history.push("/Home",{...props.location.state});
     }
 

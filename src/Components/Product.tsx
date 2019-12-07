@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -36,6 +36,7 @@ const useStyles = makeStyles({
 
 export default function Product(props: any) {
     const classes = useStyles();
+
     const {products} = props;
     const addQuantity = () => {
         if (props.cartQuantity.toString() < props.noOfCopies) {
@@ -80,9 +81,11 @@ export default function Product(props: any) {
         </Typography>
                 <Typography variant="body2" component="p">
                     Price per piece
-          <br />
+                    <br />
                     {props.price}
+                   
                 </Typography>
+                
             </CardContent>
             <CardActions >
                 <div style={{marginLeft:'44%',}}>

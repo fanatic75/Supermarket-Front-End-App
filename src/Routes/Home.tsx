@@ -253,13 +253,13 @@ export default function Home (props : any){
                     if(searchQuery){
                         if(productExists(product)){
                             if(product.noOfCopies!==0)
-                                return <Product key={product.productId} productName={product.productName} noOfCopies = {product.noOfCopies} isAddPressed={product.isAddPressed} products={products} setProducts={setProducts} index={index} cartQuantity={product.cartQuantity}  />
+                                return <Product price={product.price} key={product.productId} productName={product.productName} noOfCopies = {product.noOfCopies} isAddPressed={product.isAddPressed} products={products} setProducts={setProducts} index={index} cartQuantity={product.cartQuantity}  />
                         } else {
                             return null;
                         }
                     } else {
                         if (product.noOfCopies!==0){
-                            return <Product key={product.productId} productName={product.productName} noOfCopies = {product.noOfCopies} isAddPressed={product.isAddPressed} products={products} setProducts={setProducts} index={index} cartQuantity={product.cartQuantity}/>
+                            return <Product price={product.price} key={product.productId} productName={product.productName} noOfCopies = {product.noOfCopies} isAddPressed={product.isAddPressed} products={products} setProducts={setProducts} index={index} cartQuantity={product.cartQuantity}/>
                         }
                     }
                  })
